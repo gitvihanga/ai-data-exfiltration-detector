@@ -13,25 +13,6 @@ https://bitbucket.org/curtincomputingprojects/bentley-sem-2-group-12/src/main/
 Personal development repository (this repo):
 https://github.com/gitvihanga/ai-data-exfiltration-detector
 
-## System Architecture
-
-```mermaid
-flowchart TD
-
-A[Android Mobile App] -->|Send Behaviour Data| B[FastAPI Backend API]
-
-B --> C[Request Validation<br>Pydantic Schemas]
-
-C --> D[Detection Engine<br>detector.py]
-
-D --> E[Risk Scoring Logic]
-
-E --> F[Prediction Result]
-
-F --> G[API Response]
-
-G -->|Prediction + Confidence + Reasons| A
-
 System Architecture
 The backend is implemented using FastAPI, a high-performance Python web framework suitable for building machine-learning APIs and scalable services.
 The prototype backend provides a simple API that receives behavioural indicators from a mobile device and classifies the activity as Safe or Suspicious.
