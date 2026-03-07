@@ -1,0 +1,206 @@
+AI Data Exfiltration Malware Detector – Backend Prototype
+Overview
+
+This repository contains an initial backend prototype developed independently as part of the Curtin University Capstone project:
+AI-Driven Detection of Data-Exfiltration Malware on Mobile Devices
+
+The purpose of this repository is to demonstrate the early backend architecture, API design, and detection logic used for analysing suspicious behaviour from mobile devices.
+This repository was created separately from the official project repository to document individual development progress and time spent working on the backend system.
+
+Official team repository (Bitbucket):
+https://bitbucket.org/curtincomputingprojects/bentley-sem-2-group-12/src/main/ 
+
+Personal development repository (this repo):
+https://github.com/gitvihanga/ai-data-exfiltration-detector
+
+## System Architecture
+
+```mermaid
+flowchart TD
+
+A[Android Mobile App] -->|Send Behaviour Data| B[FastAPI Backend API]
+
+B --> C[Request Validation<br>Pydantic Schemas]
+
+C --> D[Detection Engine<br>detector.py]
+
+D --> E[Risk Scoring Logic]
+
+E --> F[Prediction Result]
+
+F --> G[API Response]
+
+G -->|Prediction + Confidence + Reasons| A
+
+System Architecture
+The backend is implemented using FastAPI, a high-performance Python web framework suitable for building machine-learning APIs and scalable services.
+The prototype backend provides a simple API that receives behavioural indicators from a mobile device and classifies the activity as Safe or Suspicious.
+
+Architecture overview:
+
+Mobile Client (Android App)
+↓
+FastAPI Backend
+↓
+Detection Engine (Python logic)
+↓
+Prediction + Confidence Score
+
+The backend exposes endpoints that can later be integrated with the Android client application.
+
+Project Structure
+backend
+│
+├── app
+│   ├── main.py        # FastAPI application and API endpoints
+│   ├── detector.py    # Detection logic for suspicious behaviour
+│   └── schemas.py     # Request and response data models
+│
+└── requirements.txt   # Python dependencies
+
+Backend Components
+main.py
+
+Defines the FastAPI application and API routes.
+
+Endpoints:
+
+GET /health
+Returns backend status.
+
+POST /analyze
+Receives behavioural data and returns a prediction.
+Example response:
+
+{
+  "prediction": "Suspicious",
+  "confidence": 0.82,
+  "reasons": [
+    "High outbound network usage",
+    "Background activity detected"
+  ]
+}
+
+detector.py
+
+Contains the core detection logic used by the backend.
+
+The current prototype uses a rule-based scoring system to simulate AI-based malware detection.
+
+Indicators currently analysed:
+
+outbound network usage
+
+background application activity
+
+connections to suspicious domains
+
+A score is calculated based on these indicators and converted into a confidence level for the prediction.
+
+This module can later be replaced or extended with a machine learning mode
+
+schemas.py
+
+Defines Pydantic data models used for validating API input and output.
+
+Request model:
+AnalyzeRequest
+
+Fields:
+network_mb
+background_activity
+suspicious_domains_count
+
+Response model:
+AnalyzeResponse
+
+Fields:
+prediction
+confidence
+reasons
+
+Using Pydantic ensures that incoming API requests are properly validated.
+
+Installation
+1. Clone the repository
+git clone https://github.com/gitvihanga/ai-data-exfiltration-detector.git
+cd ai-data-exfiltration-detector/backend
+
+2. Create a virtual environment
+Windows:
+python -m venv .venv
+.venv\Scripts\activate
+
+Mac/Linux:
+python3 -m venv .venv
+source .venv/bin/activate
+
+3. Install dependencies
+pip install -r requirements.txt
+
+Dependencies:
+fastapi
+uvicorn
+pydantic
+
+Running the Backend
+
+Start the server using Uvicorn:
+uvicorn app.main:app --reload
+
+The backend will start at:
+http://127.0.0.1:8000
+
+API Documentation
+FastAPI automatically generates API documentation.
+
+Swagger UI:
+http://127.0.0.1:8000/docs
+
+ReDoc:
+http://127.0.0.1:8000/redoc
+
+These interfaces allow you to test the API endpoints directly in the browser.
+
+Example Request
+
+POST /analyze
+Example request body:
+{
+  "network_mb": 75,
+  "background_activity": true,
+  "suspicious_domains_count": 2
+}
+
+Example response:
+{
+  "prediction": "Suspicious",
+  "confidence": 0.85,
+  "reasons": [
+    "High outbound network usage",
+    "Background activity detected",
+    "Connection to suspicious domains"
+  ]
+}
+
+Current Status
+
+This repository represents an early backend prototype developed during the initial stages of the project.
+Current functionality includes:
+FastAPI backend setup
+API endpoint design
+behavioural analysis logic
+request validation using Pydantic
+automatic API documentation
+
+Future development in the official project repository will include:
+machine learning model integration
+secure communication with the Android client
+encrypted log storage
+improved behavioural analysis
+production-level architecture
+
+Author
+Vihanga Kumbukage
+Curtin University
+Capstone Computing Project
